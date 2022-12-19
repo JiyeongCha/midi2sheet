@@ -13,6 +13,7 @@ def estimate_downbeat(args):
 
     """ Save array file """
     segment = midi_to_segment(args.midi_path)
+    check_and_make_dir(args.path_save_array)
     np.save(args.path_save_array, segment)
 
     """ Load array file to list """
@@ -28,10 +29,10 @@ def estimate_downbeat(args):
                              segment_list[num][1] - first_note,
                              segment_list[num][2]]
 
-    segment_to_midi(segment_list, path_output=f"{PATH_PROJECT}/output/{file_name}_0.00.mid",
+    segment_to_midi(segment_list, path_output=f"{PATH_PROJECT}/midi2sheet/midi/{file_name}_0.00.mid",
                     tempo=args.tempo)
 
-    midi_path_DB = f"{PATH_PROJECT}/output/{file_name}_0.00.mid"
+    midi_path_DB = f"{PATH_PROJECT}/midi2sheet/midi/{file_name}_0.00.mid"
     midi_data = pretty_midi.PrettyMIDI(midi_path_DB)
     downbeat_list = (midi_data.get_downbeats()).tolist()
     downbeat = downbeat_list[1]
@@ -62,7 +63,7 @@ def main(args):
 
     """ (Not essential) Save Quantized midi file """
     temp = combine_segment(quantized_note, quantized_rest)
-    segment_to_midi(temp, path_output=f"{PATH_PROJECT}/output/{file_name}_edit.mid", tempo=Tempo)
+    segment_to_midi(temp, path_output=f"{PATH_PROJECT}/midi2sheet/midi/{file_name}_edit.mid", tempo=Tempo)
 
     """ Make Sheet Element """
     note_element = note_element_list(quantized_note, quarter_sec)
@@ -81,14 +82,14 @@ def main(args):
 
 if __name__ == "__main__":
     PATH_PROJECT = pathlib.Path(__file__).absolute().parent.parent
-    file_name = "breath"
+    file_name = "test"
     parser = argparse.ArgumentParser(description="Convert MIDI to Sheet")
     parser.add_argument(
         "-i",
         "--midi_path",
         type=str,
-        help="Path to input midi file.",
-        default=f"{PATH_PROJECT}/output/{file_name}.mid",
+        help="Path to input midi file",
+        default=f"{PATH_PROJECT}/midi2sheet/midi/{file_name}.mid",
     )
 
     parser.add_argument(
@@ -96,7 +97,7 @@ if __name__ == "__main__":
         "--path_save_sheet",
         type=str,
         help="Path to folder for saving sheet file",
-        default=f"{PATH_PROJECT}/sheet/{file_name}",
+        default=f"{PATH_PROJECT}/midi2sheet/sheet/{file_name}",
     )
 
     parser.add_argument(
@@ -104,7 +105,7 @@ if __name__ == "__main__":
         "--path_save_array",
         type=str,
         help="Path to folder for saving array file",
-        default=f"{PATH_PROJECT}/array/{file_name}.npy",
+        default=f"{PATH_PROJECT}/midi2sheet/array/{file_name}.npy",
     )
 
     parser.add_argument(
