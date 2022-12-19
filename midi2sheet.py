@@ -113,7 +113,7 @@ if __name__ == "__main__":
         "--tempo",
         type=int,
         help="Tempo of song",
-        default=62,
+        default=66,
     )
 
     parser.add_argument(
