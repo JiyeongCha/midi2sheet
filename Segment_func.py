@@ -3,8 +3,7 @@ from music21 import *
 import pretty_midi
 import numpy as np
 from key_dict import key_dict
-
-# num = 0
+from utils import *
 
 def filter_out_vib(segment, tempo):
     """ Filter out and Delete vibrato from .mid file
@@ -20,56 +19,36 @@ def filter_out_vib(segment, tempo):
     for i in range(len(segment)):
         gap = segment[i][1] - segment[i][0]
 
-        if i == 0:
-            if gap < allowable_rate:
+        if gap < allowable_rate:
+            if i == 0:
                 segment[i + 1] = [segment[i][0], segment[i + 1][1], segment[i + 1][2]]
                 segment_del_vib.append(segment[i + 1])
                 i += 1
-                continue
-            else:
-                segment_del_vib.append(segment[i])
 
-        elif 0 < i < len(segment) - 1:
-            gap_plus = segment[i + 1][1] - segment[i + 1][0]
-            gap_minus = segment[i - 1][1] - segment[i - 1][0]
-
-            if gap < allowable_rate:
+            elif 0 < i < len(segment) - 1:
+                gap_plus = segment[i + 1][1] - segment[i + 1][0]
+                gap_minus = segment[i - 1][1] - segment[i - 1][0]
                 if gap_plus < allowable_rate:
                     segment[i - 1] = [segment[i - 1][0], segment[i][1], segment[i - 1][2]]
-
                     segment_del_vib.append(segment[i - 1])
-                    continue
-
                 else:
                     if gap_minus < allowable_rate:
                         segment[i + 1] = [segment[i][0], segment[i + 1][1], segment[i + 1][2]]
-
                         segment_del_vib.append(segment[i + 1])
-                        continue
-
                     else:
                         if gap_minus < gap_plus:
                             segment[i + 1] = [segment[i][0], segment[i + 1][1], segment[i + 1][2]]
-
                             segment_del_vib.append(segment[i + 1])
-                            continue
 
                         elif gap_minus > gap_plus:
                             segment[i - 1] = [segment[i - 1][0], segment[i][1], segment[i - 1][2]]
-
                             segment_del_vib.append(segment[i - 1])
-                            continue
-            else:
-                segment_del_vib.append(segment[i])
-                continue
 
-        elif i == len(segment) - 1:
-            if gap < allowable_rate:
+            elif i == len(segment) - 1:
                 segment[i - 1] = [segment[i - 1][0], segment[i][1], segment[i - 1][2]]
                 segment_del_vib.append(segment[i - 1])
-                continue
-            else:
-                segment_del_vib.append(segment[i])
+        else:
+            segment_del_vib.append(segment[i])
 
     return segment_del_vib
 
@@ -387,6 +366,7 @@ def save_sheet(sheet, key_signature, Tempo, file_name, time_signature, fmt_type,
     sheet.timeSignature = meter.TimeSignature(time_signature)
     sheet.keySignature = key.KeySignature(key_signature)
     sheet.insert([0, tempo.MetronomeMark(number=Tempo)])
+    check_and_make_dir(save_path)
     sheet.show(fmt=f'{fmt_type}', fp=save_path)
     # sheet.show()
 
