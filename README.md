@@ -22,6 +22,6 @@ python midi2sheet.py -i ../midi2sheet/midi/test.wav  -o ../sheet
   -i path_audio           Path to input midi file (default: '../midi2sheet/midi/test.wav')
   -o path_save_sheet      Path to folder for saving sheet file (default: '../sheet')
   -a path_save_array      Path to folder for saving array file (default: '../array')
-  -t tempo                Tempo of song (default: 62)
+  -t tempo                Tempo of song (default: 66)
   -s time_sig             Time signature of song (default: '4/4')
 ~~~
