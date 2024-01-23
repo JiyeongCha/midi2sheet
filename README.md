@@ -16,7 +16,7 @@ Convert midi files to score using music21
 
 ## Using STP from the command line
 ~~~python
-python midi2sheet.py -i ../midi2sheet/midi/test.wav  -o ../sheet
+python midi2sheet.py -i ../midi2sheet/midi/test.mid  -o ../sheet
 
 [optional arguments]
   -i path_audio           Path to input midi file (default: '../midi2sheet/midi/test.wav')
