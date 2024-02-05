@@ -25,3 +25,6 @@ python midi2sheet.py -i ../midi2sheet/midi/test.wav  -o ../sheet
   -t tempo                Tempo of song (default: 66)
   -s time_sig             Time signature of song (default: '4/4')
 ~~~
+
+##TODO
+numpy version (convert np.int / np.float to int / float)
